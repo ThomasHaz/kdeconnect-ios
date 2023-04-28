@@ -131,7 +131,7 @@ Keychain API expects as a validly constructed container class.
         
         NSMutableDictionary *outDictionary = nil;
         
-        if (SecItemCopyMatching((CFDictionaryRef)tempQuery, (CFTypeRef)&outDictionary) != errSecSuccess)
+        if (SecItemCopyMatching((CFDictionaryRef)tempQuery, (void *)&outDictionary) != errSecSuccess)
         {
             // Stick these default values into keychain item if nothing found.
             [self resetKeychainItem];
@@ -246,7 +246,7 @@ Keychain API expects as a validly constructed container class.
     
     // Acquire the password data from the attributes.
     NSData *passwordData = NULL;
-    if (SecItemCopyMatching((CFDictionaryRef)returnDictionary, (CFTypeRef)&passwordData) == errSecSuccess)
+    if (SecItemCopyMatching((CFDictionaryRef)returnDictionary, (void *)&passwordData) == errSecSuccess)
     {
         // Remove the search, class, and identifier key/value, we don't need them anymore.
         [returnDictionary removeObjectForKey:(id)kSecReturnData];
@@ -273,7 +273,7 @@ Keychain API expects as a validly constructed container class.
     NSMutableDictionary *updateItem = NULL;
 	OSStatus result;
     
-    if (SecItemCopyMatching((CFDictionaryRef)genericPasswordQuery, (CFTypeRef)&attributes) == errSecSuccess)
+    if (SecItemCopyMatching((CFDictionaryRef)genericPasswordQuery, (void *)&attributes) == errSecSuccess)
     {
         // First we need the attributes from the Keychain.
         updateItem = [NSMutableDictionary dictionaryWithDictionary:attributes];
