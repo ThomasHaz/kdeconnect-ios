@@ -111,7 +111,7 @@ certificateService:(CertificateService*)certificateService
     // Validate private key
     SecKeyRef privateKeyRef = NULL;
     OSStatus status = SecIdentityCopyPrivateKey(identityApp, &privateKeyRef);
-    if (status != noErr) {
+    if (status != errSecSuccess) {
         // Fail to retrieve private key from the .p12 file
         os_log_with_type(logger, OS_LOG_TYPE_FAULT, "Certificate loading failed: %d", status);
     } else {

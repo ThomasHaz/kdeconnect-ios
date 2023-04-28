@@ -131,7 +131,7 @@ Keychain API expects as a validly constructed container class.
         
         NSMutableDictionary *outDictionary = nil;
         
-        if (SecItemCopyMatching((CFDictionaryRef)tempQuery, (CFTypeRef)&outDictionary) != noErr)
+        if (SecItemCopyMatching((CFDictionaryRef)tempQuery, (CFTypeRef)&outDictionary) != errSecSuccess)
         {
             // Stick these default values into keychain item if nothing found.
             [self resetKeychainItem];
@@ -192,7 +192,7 @@ Keychain API expects as a validly constructed container class.
 
 - (void)resetKeychainItem
 {
-	OSStatus junk = noErr;
+	OSStatus junk = errSecSuccess;
     if (!keychainItemData) 
     {
         self.keychainItemData = [[NSMutableDictionary alloc] init];
@@ -201,7 +201,7 @@ Keychain API expects as a validly constructed container class.
     {
         NSMutableDictionary *tempDictionary = [self dictionaryToSecItemFormat:keychainItemData];
 		junk = SecItemDelete((CFDictionaryRef)tempDictionary);
-        NSAssert( junk == noErr || junk == errSecItemNotFound, @"Problem deleting current dictionary." );
+        NSAssert( junk == errSecSuccess || junk == errSecItemNotFound, @"Problem deleting current dictionary." );
     }
     
     // Default attributes for keychain item.
@@ -246,7 +246,7 @@ Keychain API expects as a validly constructed container class.
     
     // Acquire the password data from the attributes.
     NSData *passwordData = NULL;
-    if (SecItemCopyMatching((CFDictionaryRef)returnDictionary, (CFTypeRef)&passwordData) == noErr)
+    if (SecItemCopyMatching((CFDictionaryRef)returnDictionary, (CFTypeRef)&passwordData) == errSecSuccess)
     {
         // Remove the search, class, and identifier key/value, we don't need them anymore.
         [returnDictionary removeObjectForKey:(id)kSecReturnData];
@@ -273,7 +273,7 @@ Keychain API expects as a validly constructed container class.
     NSMutableDictionary *updateItem = NULL;
 	OSStatus result;
     
-    if (SecItemCopyMatching((CFDictionaryRef)genericPasswordQuery, (CFTypeRef)&attributes) == noErr)
+    if (SecItemCopyMatching((CFDictionaryRef)genericPasswordQuery, (CFTypeRef)&attributes) == errSecSuccess)
     {
         // First we need the attributes from the Keychain.
         updateItem = [NSMutableDictionary dictionaryWithDictionary:attributes];
@@ -302,7 +302,7 @@ Keychain API expects as a validly constructed container class.
         // An implicit assumption is that you can only update a single item at a time.
 		
         result = SecItemUpdate((CFDictionaryRef)updateItem, (CFDictionaryRef)tempCheck);
-		NSAssert( result == noErr, @"Couldn't update the Keychain Item." );
+		NSAssert( result == errSecSuccess, @"Couldn't update the Keychain Item." );
     }
     else
     {
@@ -312,7 +312,7 @@ Keychain API expects as a validly constructed container class.
         os_log_t logger = os_log_create([NSString kdeConnectOSLogSubsystem].UTF8String,
                                         NSStringFromClass([self class]).UTF8String);
         os_log_with_type(logger, OS_LOG_TYPE_INFO, "Result %d", result);
-        // NSAssert( result == noErr, @"Couldn't add the Keychain Item." );
+        // NSAssert( result == errSecSuccess, @"Couldn't add the Keychain Item." );
     }
 }
 

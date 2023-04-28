@@ -120,7 +120,7 @@ OSStatus generateSecIdentityForUUID(NSString *uuid)
     OSStatus securityError = SecPKCS12Import((CFDataRef) p12Data,
                                              (CFDictionaryRef)options, &items);
     SecIdentityRef identityApp;
-    if (securityError == noErr && CFArrayGetCount(items) > 0) {
+    if (securityError == errSecSuccess && CFArrayGetCount(items) > 0) {
         CFDictionaryRef identityDict = CFArrayGetValueAtIndex(items, 0);
 
         identityApp = (SecIdentityRef)CFDictionaryGetValue(identityDict,
