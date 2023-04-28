@@ -316,7 +316,7 @@ static const NSTimeInterval kPairingTimeout = 30.0;
         // TODO: Instead of looping through all the Obj-C plugins here, calls Plugin handling function elsewhere in Swift
         os_log_with_type(logger, OS_LOG_TYPE_INFO, "received a plugin package: %{public}@", np.type);
         for (id<Plugin> plugin in [_plugins allValues]) {
-            [plugin onDevicePackageReceivedWithNp:np];
+            (void)[plugin onDevicePackageReceivedWithNp:np];
         }
         //[PluginsService goThroughHostPluginsForReceivingWithNp:np];
     } else {
