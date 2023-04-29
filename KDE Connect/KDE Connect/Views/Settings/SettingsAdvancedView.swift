@@ -36,7 +36,7 @@ struct SettingsAdvancedView: View {
             Section(header: Text("DANGEROUS OPTIONS"), footer: Text("The options above are irreversible and require a complete app restart to take effect.")) {
                 Button {
                     notificationHapticsGenerator.notificationOccurred(.warning)
-                    certificateService.deleteAllItemsFromKeychain()
+                    _ = certificateService.deleteAllItemsFromKeychain()
                     UserDefaults.standard.removeObject(forKey: "savedDevices")
                 } label: {
                     HStack {
@@ -53,7 +53,7 @@ struct SettingsAdvancedView: View {
                 
                 Button {
                     notificationHapticsGenerator.notificationOccurred(.warning)
-                    certificateService.deleteHostCertificateFromKeychain()
+                    _ = certificateService.deleteHostCertificateFromKeychain()
                 } label: {
                     HStack {
                         Image(systemName: "delete.right")
